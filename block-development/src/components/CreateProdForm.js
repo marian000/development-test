@@ -3,6 +3,9 @@ import { useDispatch, useSelect } from '@wordpress/data';
 import { store as coreDataStore } from '@wordpress/core-data';
 import { Button, TextControl, CheckboxControl, PanelBody } from '@wordpress/components';
 import CategoryDropdown from './CategorySelect';
+import MediaUploadButton from './MediaUploadButton';
+
+const ALLOWED_MEDIA_TYPES = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
 
 export default function CreateProdForm({ onCancel, onSaveFinished }) {
   // Initial state setup for each field
@@ -59,13 +62,19 @@ export default function CreateProdForm({ onCancel, onSaveFinished }) {
     }
   };
 
+  function handleFileSelect(media) {
+    console.log('Selected media ID:', media.id);
+    console.log('Selected media URL:', media.url);
+  }
+
   return (
     <PanelBody>
       <TextControl label="Product Title" value={title} onChange={setTitle} />
       <TextControl label="Description" value={description} onChange={setDescription} />
-      <Button isDefault onClick={openMediaLibrary}>
+      <MediaUploadButton onFileSelect={handleFileSelect} />
+      {/* <Button isDefault onClick={openMediaLibrary}>
         Set Featured Image
-      </Button>
+      </Button> */}
       {featuredImage && <p>Image ID: {featuredImage}</p>}
       <TextControl label="Price" value={price} onChange={setPrice} />
       <TextControl label="Sale Price" value={salePrice} onChange={setSalePrice} />

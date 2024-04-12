@@ -15,7 +15,45 @@ export default function EditPageForm({ pageId, onCancel, onSaveFinished }) {
   const [youtubeVideo, setYouTubeVideo] = useState('');
   const [category, setCategory] = useState('');
 
-  const { saveEditedEntityRecord } = useDispatch(coreDataStore);
+  // Get the dispatch function
+  const { editEntityRecord, saveEditedEntityRecord } = useDispatch(coreDataStore);
+
+  // Handlers that update the Redux store immediately
+  const handleTitleChange = (value) => {
+    setTitle(value);
+    editEntityRecord('postType', 'products', pageId, { title: value });
+  };
+
+  const handleDescriptionChange = (value) => {
+    setDescription(value);
+    editEntityRecord('postType', 'products', pageId, { content: value });
+  };
+
+  const handlePriceChange = (value) => {
+    setPrice(value);
+    editEntityRecord('postType', 'products', pageId, { meta: { price: value } });
+  };
+
+  const handleSalePriceChange = (value) => {
+    setSalePrice(value);
+    editEntityRecord('postType', 'products', pageId, { meta: { sale_price: value } });
+  };
+
+  const handleIsOnSaleChange = (isChecked) => {
+    setIsOnSale(isChecked);
+    editEntityRecord('postType', 'products', pageId, { meta: { is_on_sale: isChecked } });
+  };
+
+  const handleYouTubeVideoChange = (value) => {
+    setYouTubeVideo(value);
+    editEntityRecord('postType', 'products', pageId, { meta: { youtube_video: value } });
+  };
+
+  const handleCategoryChange = (value) => {
+    setCategory(value);
+    editEntityRecord('postType', 'products', pageId, { product_categories: [value] });
+  };
+
   const handleSave = async () => {
     // Construct the product data object with current state values
     const productData = {
@@ -29,7 +67,7 @@ export default function EditPageForm({ pageId, onCancel, onSaveFinished }) {
         is_on_sale: isOnSale,
         youtube_video: youtubeVideo,
       },
-      categories: [category], // Assuming categories need to be an array of IDs
+      product_categories: [category], // Assuming categories need to be an array of IDs
     };
 
     console.log('productData', productData);
@@ -65,19 +103,14 @@ export default function EditPageForm({ pageId, onCancel, onSaveFinished }) {
 
   return (
     <PanelBody>
-      {() => {
-        console.log(page);
-      }}
-      <TextControl label="Product Title" value={title} onChange={(value) => setTitle(value)} />
-      <TextControl label="Description" value={description} onChange={(value) => setDescription(value)} />
-      {/*<Button isDefault onClick={openMediaLibrary}>Set Featured Image</Button>*/}
+      <TextControl label="Product Title" value={title} onChange={handleTitleChange} />
+      <TextControl label="Description" value={description} onChange={handleDescriptionChange} />
       <MediaUploadButton onImageSelect={setFeaturedImage} />
-      {featuredImage && <p>Image ID: {featuredImage}</p>}
-      <TextControl label="Price" value={price} onChange={(value) => setPrice(value)} />
-      <TextControl label="Sale Price" value={salePrice} onChange={(value) => setSalePrice(value)} />
-      <CheckboxControl label="Is On Sale?" checked={isOnSale} onChange={(isChecked) => setIsOnSale(isChecked)} />
-      <TextControl label="YouTube Video URL" value={youtubeVideo} onChange={(value) => setYouTubeVideo(value)} />
-      <CategoryDropdown selectedCategoryId={category} onCategoryChange={setCategory} />
+      <TextControl label="Price" value={price} onChange={handlePriceChange} />
+      <TextControl label="Sale Price" value={salePrice} onChange={handleSalePriceChange} />
+      <CheckboxControl label="Is On Sale?" checked={isOnSale} onChange={handleIsOnSaleChange} />
+      <TextControl label="YouTube Video URL" value={youtubeVideo} onChange={handleYouTubeVideoChange} />
+      <CategoryDropdown selectedCategoryId={category} onCategoryChange={handleCategoryChange} />
       <Button isPrimary onClick={handleSave} disabled={!title || !description}>
         Update Product
       </Button>

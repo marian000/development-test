@@ -1,29 +1,15 @@
+import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
 import { Button } from '@wordpress/components';
 
-export default function MediaUploadButton({ onImageSelect }) {
-  const openMediaUploader = () => {
-    // Define the media frame and its properties
-    const file_frame = wp.media({
-      title: 'Select or upload media',
-      button: {
-        text: 'Use this media',
-      },
-      multiple: false, // Allow single file select
-    });
-
-    // Handle file selection
-    file_frame.on('select', () => {
-      const attachment = file_frame.state().get('selection').first().toJSON();
-      onImageSelect(attachment.id); // Pass the selected image ID to the handler
-    });
-
-    // Open the frame
-    file_frame.open();
-  };
-
+export default function MediaUploadButton({ onFileSelect }) {
   return (
-    <Button isPrimary onClick={openMediaUploader}>
-      Upload Image
-    </Button>
+    <MediaUploadCheck>
+      <MediaUpload
+        onSelect={onFileSelect} // Callback function when a file is selected
+        allowedTypes={['image']} // Specify allowed types e.g., 'image', 'application/pdf'
+        value={null} // Media ID (useful for editing and default selections)
+        render={({ open }) => <Button onClick={open}>Upload Image</Button>}
+      />
+    </MediaUploadCheck>
   );
 }

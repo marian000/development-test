@@ -1,6 +1,7 @@
 import { decodeEntities } from '@wordpress/html-entities';
-import { Button, Spinner } from '@wordpress/components';
+import { Spinner } from '@wordpress/components';
 import PageEditButton from './PageEditButton';
+import DeleteProdButton from './DeleteProdButton';
 
 export default function ProductsList({ hasResolved, pages }) {
   if (!hasResolved) {
@@ -34,7 +35,7 @@ export default function ProductsList({ hasResolved, pages }) {
               <td>
                 <div className="form-buttons">
                   <PageEditButton pageId={page.id} />
-                  <Button variant="secondary">Delete</Button>
+                  <DeleteProdButton productId={page.id} />
                 </div>
               </td>
             </tr>
