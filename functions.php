@@ -15,3 +15,7 @@ require_once get_stylesheet_directory() . '/includes/user-functions.php';
 
 // Include custom post type
 require_once get_stylesheet_directory() . '/includes/custom-posts.php';
+
+
+// Include page settings
+require_once get_stylesheet_directory() . '/includes/page-settings.php';
