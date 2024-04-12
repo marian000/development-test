@@ -11,3 +11,7 @@ add_action('wp_enqueue_scripts', 'enqueue_parent_styles');
 
 // Include user function
 require_once get_stylesheet_directory() . '/includes/user-functions.php';
+
+
+// Include custom post type
+require_once get_stylesheet_directory() . '/includes/custom-posts.php';
